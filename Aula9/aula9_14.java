@@ -37,6 +37,7 @@ public class aula9_14 {
                 valido = true;
             } catch (InputMismatchException e){
                 System.out.println("Entrada de dados inválida!");
+                System.out.println("Insira novos dados");
                 reader.nextLine();
             }
         }
