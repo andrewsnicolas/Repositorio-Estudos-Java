@@ -1,6 +1,6 @@
 package Aulas.Projetos;
 import java.util.Scanner;
-public class Metodos {
+public class Metodos_Sistema_Financeiro {
     static int validar_valor_entrada(String conteudo_digitado){
         Scanner reader = new Scanner(System.in);
         int entrada;
