@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 public class Principal {
     public static void main(String args[]){
@@ -22,6 +23,11 @@ public class Principal {
         if(escolha==8) break;
         switch(escolha) {
             case 1:
+                try {
+                    ClasseFuncoes.criarAluno();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case 2:
                 break;
