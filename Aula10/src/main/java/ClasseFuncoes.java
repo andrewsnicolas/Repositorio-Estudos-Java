@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.FileWriter;
@@ -5,7 +7,7 @@ import java.lang.Character;
 public class ClasseFuncoes {
     static Scanner reader = new Scanner(System.in);
     static String caminhoAtual = System.getProperty("user.dir") + "\\Aulas\\Aula10\\notasAlunos.txt";
-
+    static File arquivo = new File(caminhoAtual);
     public static void criarAluno() throws IOException {
         boolean errou = false;
         char entrada;
@@ -48,6 +50,50 @@ public class ClasseFuncoes {
         } catch(IOException e){
             throw new RuntimeException(e);
         }
-
+    }
+    public static void procurarAluno() throws FileNotFoundException {
+        boolean opcaoInvalida = false;
+        boolean opcaoInvalidaSN;
+        char continuarProcurando;
+        String linha = "", nome;
+        int linhaAtual = 0;
+        int localizacao = -1;
+        Scanner readerArq = new Scanner(arquivo);
+        while(localizacao < 0){
+            continuarProcurando = 'a';
+            opcaoInvalidaSN = false;
+            if(opcaoInvalida) {
+                while(Character.toLowerCase(continuarProcurando) != 'n' && Character.toLowerCase(continuarProcurando) != 's'){
+                    if(opcaoInvalidaSN) System.out.println("\033[1;31mLETRA INSERIDA INVÁLIDA\n" +
+                                    "DIGITE 'S' PARA SIM E 'N' PARA NÃO\033[0m");
+                    System.out.println("O nome que você digitou não foi encontrado\n" +
+                            "Deseja continuar procurando? [S/N]");
+                    continuarProcurando = reader.next().charAt(0);
+                    opcaoInvalidaSN = true;
+                }
+            }
+            System.out.println("Digite o nome do aluno que está procurando: ");
+            nome = reader.nextLine();
+            while(readerArq.hasNext()){
+                linha = readerArq.nextLine();
+                if(!linha.contains(nome)) linhaAtual++;
+                else {
+                    System.out.println("Nome encontrado!");
+                    localizacao = linhaAtual;
+                    break;
+                }
+            }
+            if(localizacao>=0) break;
+            opcaoInvalida = true;
+        }
+        if(localizacao>=0){
+            String[] aluno = linha.split(";");
+            System.out.printf(
+                    "O nome completo do aluno é: %s\n" +
+                    "1° nota: %s\n" +
+                    "2° nota: %s\n" +
+                    "3° nota: %s\n" +
+                    "4° nota: %s", aluno[0], aluno[1], aluno[2], aluno[3], aluno[4]);
+        }
     }
 }

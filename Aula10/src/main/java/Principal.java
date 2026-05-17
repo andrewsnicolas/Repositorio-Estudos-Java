@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 public class Principal {
@@ -30,6 +31,11 @@ public class Principal {
                 }
                 break;
             case 2:
+                try {
+                    ClasseFuncoes.procurarAluno();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
             case 3:
                 break;
