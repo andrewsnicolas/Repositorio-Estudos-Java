@@ -1,4 +1,4 @@
-package com.mycompany.mavenproject1.Aulas.Aula2;
+package Aulas.Aula5;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 

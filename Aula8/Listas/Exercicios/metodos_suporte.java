@@ -1,5 +1,4 @@
-package com.mycompany.mavenproject1.Aulas.Aula8.Listas;
-import java.util.Collections;
+package Aulas.Aula8.Listas.Exercicios;
 import java.util.ArrayList;
 public class metodos_suporte {
     void adicionarNome(ArrayList<String> lista, String nome){

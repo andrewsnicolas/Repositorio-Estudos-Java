@@ -1,7 +1,7 @@
 package com.mycompany.mavenproject1.Aulas.Aula2;
 import java.math.BigInteger;
 import java.util.Scanner;
-public class Ex11 {
+public class Ex11_2 {
     public static void main(String a[]){
         Scanner reader = new Scanner(System.in);
         System.out.println("Digite um número");

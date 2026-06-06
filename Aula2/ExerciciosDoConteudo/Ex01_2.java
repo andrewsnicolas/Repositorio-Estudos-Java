@@ -1,7 +1,7 @@
-package com.mycompany.mavenproject1.Aulas.Aula2;
+package Aulas.Aula6;
 import java.util.Scanner;
 
-public class Ex01 {
+public class Ex01_2 {
     public static void main(String a[]){
         Scanner reader = new Scanner(System.in);
         System.out.println("Digite uma temperatura em Fahrenheit: ");

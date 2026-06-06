@@ -1,7 +1,7 @@
-package com.mycompany.mavenproject1.Aulas.Aula8.Listas;
-import java.util.Collections;
+package Aulas.Aula8.Listas.Exercicios;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 public class Ex40 {
     public static void main(String args[]){
         Scanner reader = new Scanner(System.in);
