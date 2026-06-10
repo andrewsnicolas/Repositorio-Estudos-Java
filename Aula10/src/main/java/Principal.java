@@ -12,11 +12,11 @@ public class Principal {
             System.out.println("\nO que você quer fazer?\n" +
                     "1)Criar um aluno\n" +
                     "2)Ver as notas de um aluno\n" +
-                    "4)Criar um arquivo de alunos aprovados\n" +
-                    "5)Exibir as médias dos alunos\n" +
-                    "6)Gerar um arquivo das médias dos alunos\n" +
-                    "7)Fazer backup\n" +
-                    "8)Sair");
+                    "3)Criar um arquivo de alunos aprovados\n" +
+                    "4)Exibir as médias dos alunos\n" +
+                    "5)Gerar um arquivo das médias dos alunos\n" +
+                    "6)Fazer backup\n" +
+                    "7)Sair");
             escolha = reader.nextInt();
             if(escolha<1 || escolha>7) errou = true;
             else errou = false;
@@ -37,13 +37,18 @@ public class Principal {
                     throw new RuntimeException(e);
                 }
                 break;
+            case 3:
+                try{
+                   ClasseFuncoes. criarArquivoAprovados();
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
             case 4:
                 break;
             case 5:
                 break;
             case 6:
-                break;
-            case 7:
                 break;
             default:
                 break;

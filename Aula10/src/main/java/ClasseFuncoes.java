@@ -6,11 +6,12 @@ import java.util.Map;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.lang.Character;
+import java.util.ArrayList;
 public class ClasseFuncoes {
     //Variáveis globais
     static Scanner reader = new Scanner(System.in);
-    static String caminhoAtual = System.getProperty("user.dir") + "\\Aulas\\Aula10\\notasAlunos.txt";
-    static File arquivo = new File(caminhoAtual);
+    static String caminhoAtual = System.getProperty("user.dir") + "\\Aulas\\Aula10\\";
+    static File arquivo = new File(caminhoAtual+"notasAlunos.txt");
 
 
     //OPÇÃO 1 - Criar um aluno
@@ -191,6 +192,36 @@ public class ClasseFuncoes {
                     "2° nota: %s\n" +
                     "3° nota: %s\n" +
                     "4° nota: %s", aluno[0], aluno[1], aluno[2], aluno[3], aluno[4]);
+        }
+    }
+    public static void mediaAluno(String linha) throws FileNotFoundException{
+        linha = linha.replace(",",".");
+        String[] aluno = linha.split(";");
+
+        float media = 0;
+        for(int i = 1; i<5; i++) {
+            media +=Float.parseFloat(aluno[i]);
+        }
+        media /= 4;
+        try{
+            FileWriter escritorArqAprovados = new FileWriter(caminhoAtual+"alunoAprovados.txt");
+            if(media>6) escritorArqAprovados.write(aluno[0]+"\n");
+            escritorArqAprovados.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void criarArquivoAprovados() throws FileNotFoundException{
+        String linha = "";
+        try{
+            Scanner readerArq = new Scanner(arquivo);
+            while(readerArq.hasNextLine()){
+                linha = readerArq.nextLine();
+                mediaAluno(linha);
+                //Ele não vai para as próximas linhas, para na primeira
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 }
