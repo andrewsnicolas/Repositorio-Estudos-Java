@@ -20,8 +20,8 @@ public class Principal {
             escolha = reader.nextInt();
             if(escolha<1 || escolha>7) errou = true;
             else errou = false;
-        } while(escolha < 1 || escolha>8);
-        if(escolha==8) break;
+        } while(escolha < 1 || escolha>7);
+        if(escolha==7) break;
         switch(escolha) {
             case 1:
                 try {

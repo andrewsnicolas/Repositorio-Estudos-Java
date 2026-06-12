@@ -194,7 +194,7 @@ public class ClasseFuncoes {
                     "4° nota: %s", aluno[0], aluno[1], aluno[2], aluno[3], aluno[4]);
         }
     }
-    public static void mediaAluno(String linha) throws FileNotFoundException{
+    public static void mediaAluno(String linha, FileWriter escritor) throws FileNotFoundException{
         linha = linha.replace(",",".");
         String[] aluno = linha.split(";");
 
@@ -204,9 +204,8 @@ public class ClasseFuncoes {
         }
         media /= 4;
         try{
-            FileWriter escritorArqAprovados = new FileWriter(caminhoAtual+"alunoAprovados.txt");
-            if(media>6) escritorArqAprovados.write(aluno[0]+"\n");
-            escritorArqAprovados.close();
+
+            if(media>6) escritor.write(aluno[0]+"\n");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -215,13 +214,18 @@ public class ClasseFuncoes {
         String linha = "";
         try{
             Scanner readerArq = new Scanner(arquivo);
+            FileWriter escritorArqAprovados = new FileWriter(caminhoAtual+"alunoAprovados.txt");
             while(readerArq.hasNextLine()){
                 linha = readerArq.nextLine();
-                mediaAluno(linha);
-                //Ele não vai para as próximas linhas, para na primeira
+                mediaAluno(linha, escritorArqAprovados);
             }
+            escritorArqAprovados.close();
+            System.out.println("Arquivo criado com sucesso!");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 }
