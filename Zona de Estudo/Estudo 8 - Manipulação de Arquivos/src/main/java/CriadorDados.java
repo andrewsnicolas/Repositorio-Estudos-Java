@@ -14,7 +14,8 @@ public class CriadorDados {
         float notaAleatoria;
         int c;
         String conteudo;
-        String caminhoAtual = System.getProperty("user.dir") + "\\Aulas\\Aula10\\notasAlunos.txt";
+        System.out.println("\n Localização: " + System.getProperty("user.dir") + "\n");
+        String caminhoAtual = System.getProperty("user.dir") + "Zona de Estudo\\Estudo 8 - Manipulação de Arquivos\\notasAlunos.txt";
         System.out.println(caminhoAtual);
         try (FileWriter escritor = new FileWriter(caminhoAtual)){
             ;

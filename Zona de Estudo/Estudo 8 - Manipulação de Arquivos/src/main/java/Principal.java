@@ -39,7 +39,7 @@ public class Principal {
                 break;
             case 3:
                 try{
-                   ClasseFuncoes. criarArquivoAprovados();
+                    ClasseFuncoes.criarArquivoAprovados();
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -54,5 +54,6 @@ public class Principal {
                 break;
         }
         }while(true);
+        reader.close();
     }
 }

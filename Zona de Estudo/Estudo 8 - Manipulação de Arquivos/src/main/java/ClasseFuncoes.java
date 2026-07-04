@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.lang.Character;
-import java.util.ArrayList;
 public class ClasseFuncoes {
     //Variáveis globais
     static Scanner reader = new Scanner(System.in);
@@ -212,15 +211,27 @@ public class ClasseFuncoes {
     }
     public static void criarArquivoAprovados() throws FileNotFoundException{
         String linha = "";
+
+
         try{
+
+            //Lê o arquivo original e prepara o arquivo de aprovados para ser escrito
             Scanner readerArq = new Scanner(arquivo);
             FileWriter escritorArqAprovados = new FileWriter(caminhoAtual+"alunoAprovados.txt");
+
+            //
             while(readerArq.hasNextLine()){
                 linha = readerArq.nextLine();
-                mediaAluno(linha, escritorArqAprovados);
+                mediaAluno(linha, escritorArqAprovados); //Trata os dados do aluno naquela linha
             }
+
+            //Fecha o arquivo de aprovados - por ter terminado a tarefa
             escritorArqAprovados.close();
+            readerArq.close();
+            //Se tudo ocorrer certo, essa mensagem será acionada
             System.out.println("Arquivo criado com sucesso!");
+
+            //Caso dê errado
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
