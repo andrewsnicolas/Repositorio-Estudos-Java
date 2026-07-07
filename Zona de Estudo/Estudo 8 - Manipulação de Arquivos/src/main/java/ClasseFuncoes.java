@@ -9,8 +9,8 @@ import java.lang.Character;
 public class ClasseFuncoes {
     //Variáveis globais
     static Scanner reader = new Scanner(System.in);
-    static String caminhoAtual = System.getProperty("user.dir") + "\\Aulas\\Aula10\\";
-    static File arquivo = new File(caminhoAtual+"notasAlunos.txt");
+    static String caminhoAtual = System.getProperty("user.dir") + "\\Zona de Estudo\\\\Estudo 8 - Manipulação de Arquivos";
+    static File arquivo = new File(caminhoAtual+"\\notasAlunos.txt");
 
 
     //OPÇÃO 1 - Criar um aluno
