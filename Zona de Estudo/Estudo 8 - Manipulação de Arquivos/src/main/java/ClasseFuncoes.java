@@ -242,17 +242,24 @@ public class ClasseFuncoes {
     }
     public static void mostrarMediaAlunos(){
         try{
-            Scanner reader = new Scanner(arquivo);
-            String[] aluno = new String[4];
+
+            //Declarações de variáveis
+            Scanner reader = new Scanner(arquivo); //Reader para ler o arquivo que foi declarado na linha 13
+            String[] aluno = new String[4]; //Recebe cada item do aluno
             float media = 0;
-            String linha = "";
+            String linha = ""; //Recebe cada linha do arquivo
+
             System.out.println("\n");
             while(reader.hasNextLine()){
                 linha = reader.nextLine();
-                linha = linha.replace(",",".");
+
+                linha = linha.replace(",","."); 
+                //Há a troca de vírgula para ponto para o computador converter 
+                
                 aluno = linha.split(";");
                 media = calcularMediaAluno(aluno);
-                System.out.printf("Média: %2.f - Nome: %s", media, aluno[0]);
+
+                System.out.printf("Média: %.2f - Nome: %s \n", media, aluno[0]);
             }
             System.out.println("\n");
         } catch(Exception e){
