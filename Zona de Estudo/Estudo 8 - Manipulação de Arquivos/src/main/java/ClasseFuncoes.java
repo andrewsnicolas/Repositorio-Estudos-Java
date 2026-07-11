@@ -193,15 +193,19 @@ public class ClasseFuncoes {
                     "4° nota: %s", aluno[0], aluno[1], aluno[2], aluno[3], aluno[4]);
         }
     }
-    public static void mediaAluno(String linha, FileWriter escritor) throws FileNotFoundException{
+    public static float calcularMediaAluno(String aluno[]){
+        int tamanhoVetor = aluno.length;
+        float media = 0;
+        for(int i = 1; i<tamanhoVetor; i++){
+            media += Float.valueOf(aluno[i]);
+        }
+        media/=4;
+        return media;
+    }
+    public static void escreverAlunosAprovados(String linha, FileWriter escritor) throws FileNotFoundException{
         linha = linha.replace(",",".");
         String[] aluno = linha.split(";");
-
-        float media = 0;
-        for(int i = 1; i<5; i++) {
-            media +=Float.parseFloat(aluno[i]);
-        }
-        media /= 4;
+        float media = calcularMediaAluno(aluno);
         try{
 
             if(media>6) escritor.write(aluno[0]+"\n");
@@ -211,10 +215,7 @@ public class ClasseFuncoes {
     }
     public static void criarArquivoAprovados() throws FileNotFoundException{
         String linha = "";
-
-
         try{
-
             //Lê o arquivo original e prepara o arquivo de aprovados para ser escrito
             Scanner readerArq = new Scanner(arquivo);
             FileWriter escritorArqAprovados = new FileWriter(caminhoAtual+"alunoAprovados.txt");
@@ -222,7 +223,7 @@ public class ClasseFuncoes {
             //
             while(readerArq.hasNextLine()){
                 linha = readerArq.nextLine();
-                mediaAluno(linha, escritorArqAprovados); //Trata os dados do aluno naquela linha
+                escreverAlunosAprovados(linha, escritorArqAprovados); //Trata os dados do aluno naquela linha
             }
 
             //Fecha o arquivo de aprovados - por ter terminado a tarefa
@@ -238,5 +239,25 @@ public class ClasseFuncoes {
             throw new RuntimeException(e);
         }
 
+    }
+    public static void mostrarMediaAlunos(){
+        try{
+            Scanner reader = new Scanner(arquivo);
+            String[] aluno = new String[4];
+            float media = 0;
+            String linha = "";
+            System.out.println("\n");
+            while(reader.hasNextLine()){
+                linha = reader.nextLine();
+                linha = linha.replace(",",".");
+                aluno = linha.split(";");
+                media = calcularMediaAluno(aluno);
+                System.out.printf("Média: %2.f - Nome: %s", media, aluno[0]);
+            }
+            System.out.println("\n");
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        
     }
 }

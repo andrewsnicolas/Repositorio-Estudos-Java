@@ -45,6 +45,11 @@ public class Principal {
                 }
                 break;
             case 4:
+                try{
+                    ClasseFuncoes.mostrarMediaAlunos();
+                } catch(Exception e){
+                    System.out.println(e);
+                }
                 break;
             case 5:
                 break;
