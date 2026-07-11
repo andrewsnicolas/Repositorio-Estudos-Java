@@ -255,12 +255,13 @@ public class ClasseFuncoes {
 
                 linha = linha.replace(",","."); 
                 //Há a troca de vírgula para ponto para o computador converter 
-                
+
                 aluno = linha.split(";");
                 media = calcularMediaAluno(aluno);
 
                 System.out.printf("Média: %.2f - Nome: %s \n", media, aluno[0]);
             }
+            reader.close();
             System.out.println("\n");
         } catch(Exception e){
             System.out.println(e);

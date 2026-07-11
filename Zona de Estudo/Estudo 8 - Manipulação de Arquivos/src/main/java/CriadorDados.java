@@ -11,7 +11,6 @@ public class CriadorDados {
         float min = 0F;
         float max = 10.0F;
         Random random = new Random();
-        float notaAleatoria;
         int c;
         String conteudo;
         String caminhoAtual = System.getProperty("user.dir") + "\\Zona de Estudo\\Estudo 8 - Manipulação de Arquivos\\notasAlunos.txt";
