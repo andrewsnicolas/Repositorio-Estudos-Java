@@ -240,7 +240,7 @@ public class ClasseFuncoes {
         }
 
     }
-    public static void mostrarMediaAlunos(){
+    public static void mediaAlunos(String funcao){
         try{
 
             //Declarações de variáveis
@@ -258,11 +258,21 @@ public class ClasseFuncoes {
 
                 aluno = linha.split(";");
                 media = calcularMediaAluno(aluno);
-
-                System.out.printf("Média: %.2f - Nome: %s \n", media, aluno[0]);
+                if(funcao=="escrever") escrever(caminhoAtual+"\\mediaAlunos.txt","Média: "+ media +" - Nome: "+aluno[0]+" \n");
+                else System.out.printf("Média: %.2f - Nome: %s \n", media, aluno[0]);
             }
             reader.close();
             System.out.println("\n");
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        
+    }
+    public static void escrever(String caminho, String conteudo){
+        try{
+            FileWriter escritor = new FileWriter(caminho);
+            escritor.write(conteudo);
+            escritor.close();
         } catch(Exception e){
             System.out.println(e);
         }
