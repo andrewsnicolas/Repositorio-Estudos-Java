@@ -59,6 +59,11 @@ public class Principal {
                 }
                 break;
             case 6:
+                try{
+                    ClasseFuncoes.verificarExistenciaArquivo();
+                } catch(Exception e){
+                    System.out.println(e);
+                }
                 break;
             default:
                 break;

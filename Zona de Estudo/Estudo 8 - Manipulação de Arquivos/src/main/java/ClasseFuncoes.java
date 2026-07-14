@@ -1,4 +1,6 @@
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -276,6 +278,26 @@ public class ClasseFuncoes {
         } catch(Exception e){
             System.out.println(e);
         }
-        
+    }
+    public static void verificarExistenciaArquivo(){
+        System.out.println("Digite o nome do arquivo que deseja fazer o backup manual: ");
+        String nomeArquivo = reader.next();
+        File arquivoSelecionado = new File(caminhoAtual+"\\"+nomeArquivo);
+        if(!arquivoSelecionado.exists() || arquivoSelecionado.isDirectory())
+            System.out.println("ERRO\nO ARQUIVO NÃO EXISTE");
+        else
+        {
+            //System.out.println("O arquivo existe");
+            String caminhoPastaBackups = caminhoAtual+"\\Backups";
+            File pastaBackups = new File(caminhoPastaBackups);
+            if(!pastaBackups.exists())
+                pastaBackups.mkdir();
+            File arquivoCopiado = new File(caminhoPastaBackups+"\\"+nomeArquivo);
+            try{
+                Files.copy(arquivoSelecionado.toPath(), arquivoCopiado.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch(Exception e){
+                System.out.println(e);
+            }
+        }
     }
 }
