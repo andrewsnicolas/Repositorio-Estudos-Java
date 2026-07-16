@@ -1,13 +1,21 @@
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.io.FileWriter;
+import java.util.HexFormat;
+
 import java.lang.Character;
+
+import java.security.MessageDigest;
+import java.time.LocalDate;
 public class ClasseFuncoes {
     //Variáveis globais
     static Scanner reader = new Scanner(System.in);
@@ -282,7 +290,8 @@ public class ClasseFuncoes {
     public static void verificarExistenciaArquivo(){
         System.out.println("Digite o nome do arquivo que deseja fazer o backup manual: ");
         String nomeArquivo = reader.next();
-        File arquivoSelecionado = new File(caminhoAtual+"\\"+nomeArquivo);
+        String pathArquivOrig = caminhoAtual+"\\"+nomeArquivo;
+        File arquivoSelecionado = new File(pathArquivOrig);
         if(!arquivoSelecionado.exists() || arquivoSelecionado.isDirectory())
             System.out.println("ERRO\nO ARQUIVO NÃO EXISTE");
         else
@@ -292,12 +301,41 @@ public class ClasseFuncoes {
             File pastaBackups = new File(caminhoPastaBackups);
             if(!pastaBackups.exists())
                 pastaBackups.mkdir();
-            File arquivoCopiado = new File(caminhoPastaBackups+"\\"+nomeArquivo);
+                String nomeArquivoBackup = definirNomeBackup(nomeArquivo);
             try{
+                //Cria o arquivo backup
+                File arquivoCopiado = new File(caminhoPastaBackups+"\\"+nomeArquivoBackup);
                 Files.copy(arquivoSelecionado.toPath(), arquivoCopiado.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                
+                //Verifica a veracidade do conteúdo
+                
             } catch(Exception e){
                 System.out.println(e);
             }
         }
+    }
+    public static String validadorBackup(String pathArquiv){
+        try {
+            byte[] conteudoArquivoBytes = Files.readAllBytes(Paths.get(pathArquiv));
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(conteudoArquivoBytes);
+            return HexFormat.of().formatHex(hashBytes);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return "Falha";
+    }
+    public static String definirNomeBackup(String nomeArquivoOriginal)
+    {
+       LocalDate dataAtual = LocalDate.now();
+        int indice = nomeArquivoOriginal.indexOf(".");
+        String nomeArquivoSemExt = nomeArquivoOriginal.substring(0,indice);
+        int dia = dataAtual.getDayOfMonth();
+        int mes = dataAtual.getMonthValue();
+        int ano = dataAtual.getYear();
+        nomeArquivoSemExt.concat("_"+ano+""+mes+""+dia);
+        String extensao = nomeArquivoOriginal.substring(indice);
+        String nomeArquivoCompleto = nomeArquivoSemExt+extensao;
+        return nomeArquivoCompleto;
     }
 }
