@@ -304,12 +304,28 @@ public class ClasseFuncoes {
                 String nomeArquivoBackup = definirNomeBackup(nomeArquivo);
             try{
                 //Cria o arquivo backup
-                File arquivoCopiado = new File(caminhoPastaBackups+"\\"+nomeArquivoBackup);
+                String pathArquivCop = caminhoPastaBackups+"\\"+nomeArquivoBackup;
+                File arquivoCopiado = new File(pathArquivCop);
                 Files.copy(arquivoSelecionado.toPath(), arquivoCopiado.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 
                 //Verifica a veracidade do conteúdo
-                
-            } catch(Exception e){
+                String codigoSHArquivoOriginal = validadorBackup(pathArquivOrig);
+                if(codigoSHArquivoOriginal == "Falha") {
+                    System.out.println("Um erro ocorreu ao converter o código do arquivo original para SHA-256");
+                    return;
+                }
+                String codigoSHABackup = validadorBackup(pathArquivCop);
+                if(codigoSHABackup == "Falha") {
+                    System.out.println("Um erro ocorreu ao converter o código do arquivo copiado para SHA-256 ");
+                    return;
+                }
+                if(codigoSHABackup.intern() == codigoSHArquivoOriginal.intern()) 
+                    System.out.println("A integridade dos dados foi mantida durante o backup\nBackup executado com sucesso!");
+                else
+                {
+                    System.out.println("A integridade dos dados foi comprometida\nArquivo backup apagado");
+                }
+               } catch(Exception e){
                 System.out.println(e);
             }
         }
@@ -333,7 +349,7 @@ public class ClasseFuncoes {
         int dia = dataAtual.getDayOfMonth();
         int mes = dataAtual.getMonthValue();
         int ano = dataAtual.getYear();
-        nomeArquivoSemExt.concat("_"+ano+""+mes+""+dia);
+        nomeArquivoSemExt += "_"+ano+""+mes+""+dia;
         String extensao = nomeArquivoOriginal.substring(indice);
         String nomeArquivoCompleto = nomeArquivoSemExt+extensao;
         return nomeArquivoCompleto;
