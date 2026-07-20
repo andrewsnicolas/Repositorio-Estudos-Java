@@ -6,20 +6,22 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.UUID;
 import java.util.HexFormat;
 
 import java.lang.Character;
 
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 public class ClasseFuncoes {
     //Variáveis globais
     static Scanner reader = new Scanner(System.in);
-    static String caminhoAtual = System.getProperty("user.dir") + "\\Zona de Estudo\\\\Estudo 8 - Manipulação de Arquivos";
+    static String caminhoAtual = System.getProperty("user.dir") + "\\Zona de Estudo\\Estudo 8 - Manipulação de Arquivos";
     static File arquivo = new File(caminhoAtual+"\\notasAlunos.txt");
 
 
@@ -325,6 +327,26 @@ public class ClasseFuncoes {
                 {
                     System.out.println("A integridade dos dados foi comprometida\nArquivo backup apagado");
                 }
+                Map<String, String> infoLog = new HashMap();
+                UUID idUUID = UUID.randomUUID();
+                String idString = idUUID+"";
+                infoLog.put("ID do backup", idString);
+                Date dataHoraAtual = new Date();
+                String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
+                String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
+                infoLog.put("Data/Hora", data+" "+hora);
+                infoLog.put("Nome Usuário", System.getProperty("user.name"));
+                infoLog.put("Arquivo Original", nomeArquivo);
+                infoLog.put("Local arquivo original", pathArquivOrig);
+                infoLog.put("Local Backup", pathArquivCop);
+                
+                infoLog.put("Tamanho do arquivo original", retornarTamanhoArquivo(arquivoSelecionado));
+                infoLog.put("Tamanho do arquivo copiado", retornarTamanhoArquivo(arquivoCopiado));
+                infoLog.put("SHA-256 arquivo original", codigoSHArquivoOriginal);
+                infoLog.put("SHA-256 backup", codigoSHABackup);
+
+                infoLog.put("Comprimido", "NÃO");
+                
                } catch(Exception e){
                 System.out.println(e);
             }
@@ -343,15 +365,35 @@ public class ClasseFuncoes {
     }
     public static String definirNomeBackup(String nomeArquivoOriginal)
     {
-       LocalDate dataAtual = LocalDate.now();
         int indice = nomeArquivoOriginal.indexOf(".");
         String nomeArquivoSemExt = nomeArquivoOriginal.substring(0,indice);
-        int dia = dataAtual.getDayOfMonth();
-        int mes = dataAtual.getMonthValue();
-        int ano = dataAtual.getYear();
-        nomeArquivoSemExt += "_"+ano+""+mes+""+dia;
+        Date dataHoraAtual = new Date();
+        String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
+        String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
+        nomeArquivoSemExt += "_"+data+"_"+hora;
         String extensao = nomeArquivoOriginal.substring(indice);
         String nomeArquivoCompleto = nomeArquivoSemExt+extensao;
         return nomeArquivoCompleto;
+    }
+    public static String retornarTamanhoArquivo(File arquivo){
+        int cont = 0;
+                float tamanhoArquivo  = arquivo.length();
+                while(tamanhoArquivo/1000>=1){
+                    tamanhoArquivo = tamanhoArquivo/1000;
+                    cont++;
+                }
+                String unidade = "bytes";
+                switch(cont){
+                    case 1:
+                        unidade = "Kb";
+                        break;
+                    case 2:
+                        unidade = "Mb";
+                        break;
+                    case 3:
+                        unidade = "Gb";
+                        break;
+                }
+        return (tamanhoArquivo+" "+unidade);
     }
 }
