@@ -1,11 +1,16 @@
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +22,6 @@ import java.lang.Character;
 
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 public class ClasseFuncoes {
     //Variáveis globais
     static Scanner reader = new Scanner(System.in);
@@ -345,8 +349,8 @@ public class ClasseFuncoes {
                 infoLog.put("SHA-256 arquivo original", codigoSHArquivoOriginal);
                 infoLog.put("SHA-256 backup", codigoSHABackup);
 
-                infoLog.put("Comprimido", "NÃO");
-                
+                infoLog.put("Comprimido", "SIM");
+                infoLog.put("Status", "SUCESSO");
                } catch(Exception e){
                 System.out.println(e);
             }
@@ -395,5 +399,45 @@ public class ClasseFuncoes {
                         break;
                 }
         return (tamanhoArquivo+" "+unidade);
+    }
+    public static void compactarBackup(String arquivo, String nomeBackup, String pathPasta){
+        try{
+
+            FileOutputStream fos = new FileOutputStream(nomeBackup+"zip");
+            //Cria o arquivo zip vazio
+
+            ZipOutputStream zip = new ZipOutputStream(fos);
+            //Transforma ele em Zip
+
+            ZipEntry zipEntry = new ZipEntry(arquivo);
+            //Cria a instância que vai ler os dados de tal arquivo
+
+            zip.putNextEntry(zipEntry);
+            //Prepara a cópia das informações do arquivo
+
+            FileInputStream fis = new FileInputStream(nomeBackup+"zip");
+            //Abre o arquivo que irá ser copiado
+
+            byte[] buffer = new byte[2048];
+            //Escolha estratégica pela média do tamanho dos arquivos
+
+            int byteLidos; 
+
+            while((byteLidos = fis.read(buffer)) > 0){ 
+            //Lê os bytes do arquivo e verifica se há bytes para serem lidos
+
+            zip.write(buffer, 0, byteLidos); 
+            //Escreve os bytes da posição 0 até o final do arquivo
+            }
+            zip.closeEntry();
+            fis.close();
+            zip.close();
+            System.out.println("Arquivo Zipado com sucesso");
+        } catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public static void escreverLog(Map<String, String> informacoes){
+
     }
 }
