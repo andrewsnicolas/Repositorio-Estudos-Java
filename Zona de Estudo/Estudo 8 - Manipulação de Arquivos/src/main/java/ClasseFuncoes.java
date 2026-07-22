@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
 import java.util.HexFormat;
+import java.util.ArrayList;
 
 import java.lang.Character;
 
@@ -331,26 +332,23 @@ public class ClasseFuncoes {
                 {
                     System.out.println("A integridade dos dados foi comprometida\nArquivo backup apagado");
                 }
-                Map<String, String> infoLog = new HashMap();
+                ArrayList<String> infoLog = new ArrayList();
                 UUID idUUID = UUID.randomUUID();
                 String idString = idUUID+"";
-                infoLog.put("ID do backup", idString);
+                infoLog.add(idString);
                 Date dataHoraAtual = new Date();
-                String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
-                String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
-                infoLog.put("Data/Hora", data+" "+hora);
-                infoLog.put("Nome Usuário", System.getProperty("user.name"));
-                infoLog.put("Arquivo Original", nomeArquivo);
-                infoLog.put("Local arquivo original", pathArquivOrig);
-                infoLog.put("Local Backup", pathArquivCop);
+                String data = new SimpleDateFormat("ddMMyyyy_HHmmss").format(dataHoraAtual);
+                infoLog.add(data);
+                infoLog.add(nomeArquivo);
+                infoLog.add(pathArquivOrig);
+                infoLog.add(pathArquivCop);
                 
-                infoLog.put("Tamanho do arquivo original", retornarTamanhoArquivo(arquivoSelecionado));
-                infoLog.put("Tamanho do arquivo copiado", retornarTamanhoArquivo(arquivoCopiado));
-                infoLog.put("SHA-256 arquivo original", codigoSHArquivoOriginal);
-                infoLog.put("SHA-256 backup", codigoSHABackup);
-
-                infoLog.put("Comprimido", "SIM");
-                infoLog.put("Status", "SUCESSO");
+                infoLog.add(retornarTamanhoArquivo(arquivoSelecionado));
+                infoLog.add(retornarTamanhoArquivo(arquivoCopiado));
+                infoLog.add(codigoSHArquivoOriginal);
+                infoLog.add(codigoSHABackup);
+                compactarBackup(pathArquivCop, nomeArquivoBackup, caminhoPastaBackups);
+                escreverLog(infoLog, caminhoPastaBackups);
                } catch(Exception e){
                 System.out.println(e);
             }
@@ -372,9 +370,8 @@ public class ClasseFuncoes {
         int indice = nomeArquivoOriginal.indexOf(".");
         String nomeArquivoSemExt = nomeArquivoOriginal.substring(0,indice);
         Date dataHoraAtual = new Date();
-        String data = new SimpleDateFormat("dd/MM/yyyy").format(dataHoraAtual);
-        String hora = new SimpleDateFormat("HH:mm:ss").format(dataHoraAtual);
-        nomeArquivoSemExt += "_"+data+"_"+hora;
+        String data = new SimpleDateFormat("ddMMyyyy_HHmmss").format(dataHoraAtual);
+        nomeArquivoSemExt += "_"+data;
         String extensao = nomeArquivoOriginal.substring(indice);
         String nomeArquivoCompleto = nomeArquivoSemExt+extensao;
         return nomeArquivoCompleto;
@@ -402,8 +399,11 @@ public class ClasseFuncoes {
     }
     public static void compactarBackup(String arquivo, String nomeBackup, String pathPasta){
         try{
+            int indice = nomeBackup.indexOf(".");
 
-            FileOutputStream fos = new FileOutputStream(nomeBackup+"zip");
+            String nomeArquivoSemExt = nomeBackup.substring(0,indice);
+
+            FileOutputStream fos = new FileOutputStream(pathPasta+"\\"+nomeArquivoSemExt+".zip");
             //Cria o arquivo zip vazio
 
             ZipOutputStream zip = new ZipOutputStream(fos);
@@ -415,7 +415,7 @@ public class ClasseFuncoes {
             zip.putNextEntry(zipEntry);
             //Prepara a cópia das informações do arquivo
 
-            FileInputStream fis = new FileInputStream(nomeBackup+"zip");
+            FileInputStream fis = new FileInputStream(pathPasta+"\\"+nomeArquivoSemExt+".zip");
             //Abre o arquivo que irá ser copiado
 
             byte[] buffer = new byte[2048];
@@ -437,7 +437,34 @@ public class ClasseFuncoes {
             System.out.println(e);
         }
     }
-    public static void escreverLog(Map<String, String> informacoes){
-
+    public static void escreverLog(ArrayList<String> informacoes, String pathPastaBackup){
+        String pathArquivoLog = pathPastaBackup+"\\log.txt";
+        try{
+            FileWriter logWriter = new FileWriter(pathArquivoLog, true);
+            logWriter.write("\n================================================================\n");
+            logWriter.write("\n");
+            logWriter.write("\nID do Backup:                "+ informacoes.get(0));
+            logWriter.write("\nData/Hora:                   "+ informacoes.get(1));
+            logWriter.write("\nNome Usuário:                "+ System.getProperty("user.name"));
+            logWriter.write("\nArquivo Original:            "+ informacoes.get(2));
+            logWriter.write("\nLocal arquivo original:      "+ informacoes.get(3));
+            logWriter.write("\nLocal Backup:                "+ informacoes.get(4));
+            logWriter.write("\n");
+            logWriter.write("\nTamanho do arquivo original: "+ informacoes.get(5));
+            logWriter.write("\nTamanho do arquivo copiado:  "+ informacoes.get(6));
+            logWriter.write("\nSHA-256 arquivo original:    "+ informacoes.get(7));
+            logWriter.write("\nSHA-256 backup:              "+ informacoes.get(8));
+            logWriter.write("\n");
+            logWriter.write("\nComprimido:              SIM");
+            logWriter.write("\nStatus:                  SUCESSO");
+            logWriter.write("\n");
+            logWriter.write("\n==============================================================\n");
+            logWriter.close();
+            System.out.println("Log atualizado com sucesso!");
+        } catch(Exception e){
+            System.out.println(e);
+        }
+        
+        
     }
 }
